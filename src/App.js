@@ -11,9 +11,13 @@ import DropdownMenu from "./components/DropdownMenu";
 // Firebase imports
 import * as firebase from "firebase";
 import firebaseConfig from './firebase.config';
-import { Nav } from 'react-bootstrap';
 
 firebase.initializeApp(firebaseConfig);
+
+const isSessionSignedIn = localStorage.getItem('signedIn') ? true : false;
+
+
+
 
 function App() {
 
@@ -23,7 +27,15 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [status, setStatus] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
+  const [signedIn, setSignedIn] = useState(isSessionSignedIn);
 
+
+
+
+  //   setSignedIn(isSessionSignedIn);
+  // } else {
+  //   setSignedIn(false); 
+  // }
 
   // Use Effect
 
@@ -35,6 +47,10 @@ function App() {
     filterHandler()
     saveLocalTodos()
   }, [todos, status])
+
+  // useEffect(() => {
+  //   localStorage.setItem('signedIn', signedIn)
+  // }, [signedIn])
 
   // Functions
   const filterHandler = () => {
@@ -65,16 +81,44 @@ function App() {
     }
   }
 
-  // Run ONCE when app starts
-  // getLocalTodos()
+  // Firebase login
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  const SignIn = () => firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(function () {
+
+      firebase.auth().signInWithPopup(provider).then(function (result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        // Set state
+        setSignedIn(true)
+        localStorage.setItem('signedIn', true)
+        // console.log("Signed in user " + user.email);
+
+      })
+    })
+
+
+  const SignOut = () => firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(function () {
+      firebase.auth().signOut().then(function () {
+        // Sign-out successful.
+        setSignedIn(false);
+        localStorage.setItem('signedIn', false)
+      }).catch(function (error) {
+        // An error happened.
+      });
+    })
+
 
 
   return (
     <div className="App">
       <Navbar>
-        <NavItem icon={<i className="fab fa-github"></i>} />
         <NavItem icon={<i className="fas fa-cog"></i>}>
-          <DropdownMenu />
+          <DropdownMenu SignIn={SignIn} SignOut={SignOut} signedIn={signedIn} />
         </NavItem>
       </Navbar>
 

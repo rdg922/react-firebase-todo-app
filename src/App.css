@@ -23,7 +23,7 @@ a {
   height: var(--nav-size);
   padding: 0 1rem;
   border-bottom: var(--border);
-  background-color: #0000007F;
+  background-color: #0000003F;
 }
 
 .navbar-nav {
@@ -83,6 +83,14 @@ a {
   padding: 1rem;
   overflow: hidden;
   transition: height var(--speed) ease;
+
+}
+.dropdown-text {
+  padding-left: 5px;
+}
+
+.menu {
+  width: 100%;
 }
 
 .menu-item {
@@ -225,15 +233,6 @@ form button:hover {
 }
 .todo-item {
   padding: 0rem 0.5rem;
-}
-
-.fa-trash,
-.fa-check {
-  pointer-events: none;
-}
-
-.fa-cog {
-  padding: 20px;
 }
 
 .fall {
