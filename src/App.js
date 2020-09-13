@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-// import { Container, Row, Col, Button, Alert, Breadcrumb, Card, Form } from 'react-bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
 //importing Components
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
-import SettingsCog from "./components/SettingsCog";
+import Navbar from "./components/Navbar";
+import NavItem from "./components/NavItem";
+import DropdownMenu from "./components/DropdownMenu";
+
+// Firebase imports
+import * as firebase from "firebase";
+import firebaseConfig from './firebase.config';
+import { Nav } from 'react-bootstrap';
+
+firebase.initializeApp(firebaseConfig);
 
 function App() {
+
 
   // States
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
   const [status, setStatus] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
+
 
   // Use Effect
 
@@ -63,12 +71,18 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar>
+        <NavItem icon={<i className="fab fa-github"></i>} />
+        <NavItem icon={<i className="fas fa-cog"></i>}>
+          <DropdownMenu />
+        </NavItem>
+      </Navbar>
+
       <header>
         <h1>Rohit's Todo List</h1>
       </header>
       <Form todos={todos} setTodos={setTodos} inputText={inputText} setInputText={setInputText} setStatus={setStatus} />
       <TodoList todos={todos} setTodos={setTodos} filteredTodos={filteredTodos} />
-      <SettingsCog />
     </div>
   );
 }
