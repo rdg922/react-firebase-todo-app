@@ -1,0 +1,31 @@
+[33mcommit 643139d491980617f4fb17ed1716aec4585a7b09[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Rohit <rdg922@gmail.com>
+Date:   Sun Sep 13 16:15:29 2020 -0400
+
+    Add firebase.config.js to .gitignore
+
+[33mcommit d89e7a0aa779b5e1ae7f7fcfa687be0f19429993[m
+Author: Rohit <rdg922@gmail.com>
+Date:   Sun Sep 13 16:13:59 2020 -0400
+
+    Added Firebase Login / Logout
+    
+    Still needs security features added
+
+[33mcommit 26b782ede4d486cdae1c53fe09e26c1ca1765854[m
+Author: Rohit <rdg922@gmail.com>
+Date:   Sat Sep 12 22:21:05 2020 -0400
+
+    Add dropdown menu
+
+[33mcommit 9c21ca16a2ce1a823101e3b3a28024fcab9f70c7[m
+Author: Rohit <rdg922@gmail.com>
+Date:   Sat Sep 12 12:41:05 2020 -0400
+
+    Todo App working
+
+[33mcommit 6702e65b67e25d06ff4737e6ffe3056f191c4fc8[m
+Author: Rohit <rdg922@gmail.com>
+Date:   Wed Sep 9 06:53:18 2020 -0400
+
+    Initialize project using Create React App

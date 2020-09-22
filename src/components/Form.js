@@ -11,7 +11,7 @@ const Form = ({ todos, setTodos, inputText, setInputText, setStatus }) => {
         e.preventDefault();
         setTodos([
             ...todos,
-            { text: inputText, completed: false, id: Math.random() * 1000 }
+            { text: inputText, completed: false, id: Math.random() * 1000, dateCreated: Date.now() }
         ]);
         setInputText("");
     }

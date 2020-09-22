@@ -15,7 +15,7 @@ const DropdownMenu = (props) => {
         )
     } else {
         return (
-            <a href="#" className="menu-item" onClick={() => props.function()}>
+            <a href="#" className="menu-item" onClick={() => props.function() && props.setActiveMenu('main')}>
                 <span className="dropdown-button">{props.leftIcon}</span>
                 
                 {props.children}

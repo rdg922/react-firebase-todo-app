@@ -9,14 +9,16 @@ import NavItem from "./components/NavItem";
 import DropdownMenu from "./components/DropdownMenu";
 
 // Firebase imports
-import * as firebase from "firebase";
+import firebase from "firebase";
 import firebaseConfig from './firebase.config';
 
 firebase.initializeApp(firebaseConfig);
 
 const isSessionSignedIn = localStorage.getItem('signedIn') ? true : false;
 
-
+let userUid = null;
+let databaseRef;
+let databaseRefObject;
 
 
 function App() {
@@ -27,15 +29,24 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [status, setStatus] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
-  const [signedIn, setSignedIn] = useState(isSessionSignedIn);
+  const [signedIn, setSignedIn] = useState(isSessionSignedIn)
 
+  const pushTodosFirebase = () => {
+    if (signedIn) {
+      databaseRef = firebase.database().ref(localStorage.getItem('signedIn'));
+      databaseRef.set({ todos: JSON.stringify(todos), lastUpdated: Date.now() });
+    }
+  }
 
-
-
-  //   setSignedIn(isSessionSignedIn);
-  // } else {
-  //   setSignedIn(false); 
-  // }
+  const pullTodosFirebase = () => {
+    if (signedIn) {
+      databaseRef = firebase.database().ref(localStorage.getItem('signedIn'));
+      databaseRef.child("todos")
+        .once("value", (snap) => {
+          setTodos(JSON.parse(snap.val()))
+        })
+    }
+  }
 
   // Use Effect
 
@@ -48,9 +59,11 @@ function App() {
     saveLocalTodos()
   }, [todos, status])
 
-  // useEffect(() => {
-  //   localStorage.setItem('signedIn', signedIn)
-  // }, [signedIn])
+  useEffect(() => {
+    pullTodosFirebase()
+    // pushTodosFirebase()
+  }, [signedIn])
+
 
   // Functions
   const filterHandler = () => {
@@ -70,6 +83,7 @@ function App() {
   // Save to Local
   const saveLocalTodos = () => {
     localStorage.setItem('todos', JSON.stringify(todos));
+    console.log("yuh")
   }
 
   const getLocalTodos = () => {
@@ -94,9 +108,8 @@ function App() {
         var user = result.user;
         // Set state
         setSignedIn(true)
-        localStorage.setItem('signedIn', true)
-        // console.log("Signed in user " + user.email);
-
+        userUid = user.uid;
+        localStorage.setItem('signedIn', user.uid);
       })
     })
 
@@ -106,13 +119,12 @@ function App() {
       firebase.auth().signOut().then(function () {
         // Sign-out successful.
         setSignedIn(false);
-        localStorage.setItem('signedIn', false)
+        localStorage.setItem('signedIn', false);
+        userUid = null;
       }).catch(function (error) {
         // An error happened.
       });
     })
-
-
 
   return (
     <div className="App">
